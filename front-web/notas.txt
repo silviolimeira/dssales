@@ -1,3 +1,0 @@
-
-
-yarn add eslint prettier eslint-plugin-react-hooks @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-plugin-react eslint-config-prettier eslint-plugin-prettier --dev

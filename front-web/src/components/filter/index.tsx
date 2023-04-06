@@ -12,7 +12,7 @@ function Filter() {
   };
 
   return (
-    <div className="filter-container">
+    <div className="filter-container base-card">
       <FlatPicker
         options={{
           mode: 'range',

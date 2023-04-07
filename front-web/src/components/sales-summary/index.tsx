@@ -6,13 +6,22 @@ import { ReactComponent as DoneIcon } from '../../assets/done-icon.svg';
 import { ReactComponent as SyncIcon } from '../../assets/sync-icon.svg';
 import { FilterData, SalesSummaryData } from '../../types';
 import { buildFilterParams, makeRequest } from '../../utils/request';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 type Props = {
   filterData?: FilterData;
 };
 
+const initialSummary = {
+  avg: 0,
+  count: 0,
+  max: 0,
+  min: 0
+};
+
 function SalesSummary({ filterData }: Props) {
+  const [summary, setSummary] = useState<SalesSummaryData>(initialSummary);
+
   const params = useMemo(() => buildFilterParams(filterData), [filterData]);
 
   useEffect(() => {
@@ -21,7 +30,7 @@ function SalesSummary({ filterData }: Props) {
         params
       })
       .then((response) => {
-        console.log(response.data);
+        setSummary(response.data);
       })
       .catch(() => {
         console.error('Error to fetch sales by date');
@@ -30,10 +39,10 @@ function SalesSummary({ filterData }: Props) {
 
   return (
     <div className="sales-summary-container">
-      <SalesSummaryCard value={430} label="Média" icon={<DoneIcon />} />
-      <SalesSummaryCard value={630} label="Quantidade" icon={<SyncIcon />} />
-      <SalesSummaryCard value={130} label="Mínima" icon={<BarCharIcon />} />
-      <SalesSummaryCard value={230} label="Máxima" icon={<AvatarIcon />} />
+      <SalesSummaryCard value={summary?.avg?.toFixed(2)} label="Média" icon={<DoneIcon />} />
+      <SalesSummaryCard value={summary?.count} label="Quantidade" icon={<SyncIcon />} />
+      <SalesSummaryCard value={summary?.min} label="Mínima" icon={<BarCharIcon />} />
+      <SalesSummaryCard value={summary?.max} label="Máxima" icon={<AvatarIcon />} />
     </div>
   );
 }
